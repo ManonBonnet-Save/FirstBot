@@ -22,20 +22,24 @@ void setup(){
 
   //on fixe le baudrate
   Serial.begin(9600);
+  Serial.write('z');
 }
 
 void loop(){
-
   //on recupere les commandes de la rasp
   if(Serial.available() > 0) {
     motor_g_d_direction = Serial.read();
-    if(motor_g_d_direction == '1'){
+    if(motor_g_d_direction == '00000001'){
       motor_g_direction = LOW;
       motor_d_direction = HIGH;
     }
-    else if(motor_g_d_direction == '17'){
+    else if(motor_g_d_direction == '00010000'){
       motor_g_direction = HIGH;
       motor_d_direction = LOW;
+    }
+    else if(motor_g_d_direction == '00010001'){
+      motor_g_direction = HIGH;
+      motor_d_direction = HIGH;
     }
     else{
       motor_g_direction = LOW;
