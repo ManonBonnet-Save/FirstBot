@@ -1,13 +1,8 @@
 import time
-from comm_serie import serial_init, serial_close, commande
+from comm_serie import serial_init, serial_close, commande, gauche, droite, stop
 
 serial_init()
-commande(1,200,1)
-time.sleep(5)
-commande(16,1,200)
-time.sleep(5)
-commande(17,200,200)
-time.sleep(5)
-commande(20,200,200)
-time.sleep(5)
+droite()
+stop()
+gauche()
 serial_close()

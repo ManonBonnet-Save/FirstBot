@@ -31,9 +31,10 @@ ly = len(frame)
 lx = len(frame[0])
 l_buff = int(0.15*lx)
 l2_buff = int(l_buff/2)
-enough_color = 200
+l4_buff = int(l_buff/4)
+enough_color = 140
 count = 0
-nby_buffs = 4
+nby_buffs = 8
 
 while True:
 	ret, frame = cap.read()
@@ -56,7 +57,7 @@ while True:
                 buff_failed = True
                 buff_exit = False
                 x_buff = x0
-                y_buff = y0 - i*l_buff
+                y_buff = y0 - i*l2_buff
                 buff_offset = 0
 	        buff_side = -1
                 while not buff_exit:
@@ -66,7 +67,7 @@ while True:
                                 buff_failed = False
                                 buff_list += [(x_buff, y_buff)]
                         else:
-                                buff_offset += l2_buff
+                                buff_offset += l4_buff
                                 buff_side *= -1
                                 x_buff += buff_offset * buff_side
                         if  x_buff < 0 or (x_buff + l_buff) > lx:
@@ -104,24 +105,29 @@ while True:
                 
         else :
                 followed_line = None
-                
+        
         if followed_line is None:
                 print('[\_(:/)_/]] lost... should do some recovering')
-        elif followed_line[0][0] > 20:
-                if followed_line[1] > 0:
-                        print('[ORDER] turn left++')
+        else:
+                dist_from_line = followed_line[0][1] / np.sqrt(1+followed_line[0][0]**2)
+                angle_with_line = followed_line[1]
+        
+                if dist_from_line > 100:
+                        if angle_with_line > np.pi/6:
+                                print('turn right')
+                        elif angle_with_line < -np.pi/6:
+                                print('turn left')
+                        else:
+                                print('forward ') 
                 else:
-                        print('[ORDER] turn left')
-        elif followed_line[0][0] < -20:
-                if followed_line[1] < 0:
-                        print('[ORDER] turn right++')
-                else:
-                        print('[ORDER] turn right')
-        elif abs(followed_line[0][0]) < 20:
-                print('[ORDER] continue forward')
-        else :
-                print('[?????]] wut?')
-
+                        if angle_with_line < -np.pi/6:
+                                print('turn right')
+                        elif angle_with_line > np.pi/6:
+                                print('turn left')
+                        else:
+                                print('forward ') 
+                
+                
         '''
 	if lines is not None:
 		lines = lines[0]

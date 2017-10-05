@@ -14,6 +14,17 @@ global port_serie
 
 port_serie = Serial(port="/dev/ttyUSB0", baudrate=9600, timeout=1, writeTimeout=1)
 
+def stop():
+	commande(0,0,0)
+
+def droite():
+	commande(16,60,60)
+	time.sleep(0.01)
+
+def gauche():
+	commande(1,60,60)
+	time.sleep(0.01)
+
 def serial_init():
 	while port_serie.read() != 'z':
 		pass
