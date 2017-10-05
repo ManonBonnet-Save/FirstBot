@@ -16,14 +16,19 @@ port_serie = Serial(port="/dev/ttyUSB0", baudrate=9600, timeout=1, writeTimeout=
 
 def stop():
 	commande(0,0,0)
+        
+def right(ratio):
+	commande(16,130,130,ratio)#16
+        
+def left(ratio):
+	commande(1,130,130,ratio)#1
 
-def droite():
-	commande(16,60,60)
-	time.sleep(0.01)
+def forward():
+	print('>>>>>>>>>>>>>>>>>>>>>><forward')
+	commande(17,80,80)
 
-def gauche():
-	commande(1,60,60)
-	time.sleep(0.01)
+def backward():
+	commande(20,70,70,0.5)
 
 def serial_init():
 	while port_serie.read() != 'z':
@@ -34,7 +39,7 @@ def serial_close():
 	time.sleep(1)
 	port_serie.close()
 
-def commande(motor_g_d_direction,motor_g_speed,motor_d_speed):
+def commande(motor_g_d_direction,motor_g_speed,motor_d_speed,ratio=1):
 	direction = motor_g_d_direction
 	pwm1 = motor_g_speed
 	pwm2 = motor_d_speed
@@ -43,6 +48,7 @@ def commande(motor_g_d_direction,motor_g_speed,motor_d_speed):
 	port_serie.write(chr(direction))
 	port_serie.write(chr(pwm1))
 	port_serie.write(chr(pwm2))
-	time.sleep(1)
-	while ( port_serie.inWaiting() ):
-		print(port_serie.readline(),end='')
+        time.sleep(0.3*ratio)
+        port_serie.write(chr(0))
+	port_serie.write(chr(0))
+	port_serie.write(chr(0))
