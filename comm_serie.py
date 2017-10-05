@@ -1,3 +1,4 @@
+from __future__ import print_function
 import time
 from serial import *
 
@@ -26,6 +27,11 @@ def commande(motor_g_d_direction,motor_g_speed,motor_d_speed):
 	direction = motor_g_d_direction
 	pwm1 = motor_g_speed
 	pwm2 = motor_d_speed
-	nombre = ''.join([chr(direction),chr(pwm1),chr(pwm2)])
-	port_serie.write(nombre.encode('ascii'))
-		
+	#nombre = ''.join([chr(direction),chr(pwm1),chr(pwm2)])
+	#print(nombre)
+	port_serie.write(chr(direction))
+	port_serie.write(chr(pwm1))
+	port_serie.write(chr(pwm2))
+	time.sleep(1)
+	while ( port_serie.inWaiting() ):
+		print(port_serie.readline(),end='')
